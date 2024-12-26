@@ -38,6 +38,26 @@ export default function UpdateProfileInformation({
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
+                    <InputLabel htmlFor="avatar" value="Avatar" />
+
+                    {user.profile_photo_url ? (
+                        <img
+                            src={user.profile_photo_url}
+                            alt="avatar"
+                            className="rounded-full h-20 w-20"
+                        />
+                    ) : (
+                        <img
+                            src="https://ui-avatars.com/api/?name=John+Doe&background=random&rounded=true"
+                            alt="avatar"
+                            className="rounded-full h-20 w-20"
+                        />
+                    )}
+
+                    <InputError className="mt-2" message={errors.name} />
+                </div>
+
+                <div>
                     <InputLabel htmlFor="name" value="Name" />
 
                     <TextInput

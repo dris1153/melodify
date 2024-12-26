@@ -30,7 +30,10 @@ export default function AdminLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
-                                <NavLink href={route("admin.users.list")}>
+                                <NavLink
+                                    href={route("admin.users.list")}
+                                    active={route().current("admin.users.list")}
+                                >
                                     Users
                                 </NavLink>
                                 <NavLink href={route("admin.dashboard")}>
