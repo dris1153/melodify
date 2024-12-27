@@ -4,6 +4,8 @@ import PrimaryButton from "@/src/Components/PrimaryButton";
 import TextInput from "@/src/Components/TextInput";
 import { Transition } from "@headlessui/react";
 import { Link, useForm, usePage } from "@inertiajs/react";
+import { ImageOutlined } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -11,6 +13,7 @@ export default function UpdateProfileInformation({
     className = "",
 }) {
     const user = usePage().props.auth.user;
+    const [avatar, setAvatar] = useState(user.avatar);
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
@@ -20,9 +23,20 @@ export default function UpdateProfileInformation({
 
     const submit = (e) => {
         e.preventDefault();
-
         patch(route("profile.update"));
     };
+
+    useEffect(() => {
+        if (user?.avatar !== avatar) {
+            setAvatar(user.avatar);
+        } else {
+            if (user?.avatar) {
+                setAvatar(user.avatar);
+            } else {
+                setAvatar("/images/default-avatar.jpg");
+            }
+        }
+    }, [user]);
 
     return (
         <section className={className}>
@@ -40,19 +54,40 @@ export default function UpdateProfileInformation({
                 <div>
                     <InputLabel htmlFor="avatar" value="Avatar" />
 
-                    {user.profile_photo_url ? (
-                        <img
-                            src={user.profile_photo_url}
-                            alt="avatar"
-                            className="rounded-full h-20 w-20"
+                    <div className="mt-1">
+                        {/* no images */}
+
+                        <div className="flex items-center w-[120px] h-[120px] rounded-[8px] overflow-hidden group relative cursor-pointer">
+                            <label
+                                htmlFor="profile-avatar"
+                                className="cursor-pointer absolute z-10 inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                            >
+                                <ImageOutlined className="text-white" />
+                            </label>
+                            <img
+                                src={avatar}
+                                alt="Current avatar"
+                                className="w-full h-full object-cover object-center"
+                                onError={(e) => {
+                                    console.log(e);
+                                }}
+                            />
+                        </div>
+
+                        <input
+                            className="hidden"
+                            type="file"
+                            accept="image/*,video/*"
+                            id="profile-avatar"
+                            name="profile-avatar"
+                            onChange={(e) => {
+                                if (e.target.files.length) {
+                                    const file = e.target.files[0];
+                                    setAvatar(URL.createObjectURL(file));
+                                }
+                            }}
                         />
-                    ) : (
-                        <img
-                            src="https://ui-avatars.com/api/?name=John+Doe&background=random&rounded=true"
-                            alt="avatar"
-                            className="rounded-full h-20 w-20"
-                        />
-                    )}
+                    </div>
 
                     <InputError className="mt-2" message={errors.name} />
                 </div>

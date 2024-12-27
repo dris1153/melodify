@@ -19,7 +19,6 @@ export function AppGlobalStyles({ children }) {
                     styleOverrides: {
                         body: {
                             backgroundColor: "#2c2c2c",
-                            color: `rgba(255, 255, 255, 0.87)`,
                             margin: 0,
                             padding: 0,
                         },

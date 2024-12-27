@@ -16,10 +16,12 @@
     grid-template-columns: 1fr 5fr 1fr;
     min-height: 100svh;
     transition: all 0.75s;
+    color: #fff;
 }
 
 textarea:focus,
 input:focus {
     outline: none;
     border: none;
+    box-shadow: none;
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('role')->default('user'); // Vai trò của người dùng, mặc định là user
             $table->timestamp('email_verified_at')->nullable();
             $table->date('birth_date')->nullable(); // Ngày sinh
-            $table->string('gender')->nullable(); // Giới tính
+            $table->string('gender')->nullable(); // Giới tính (male, female, other)
             $table->string('nationality')->nullable(); // Quốc tịch
             $table->string('avatar')->nullable(); // Cột avatar, có thể null nếu không có ảnh
             $table->string('password');

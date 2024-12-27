@@ -20,9 +20,10 @@ Route::prefix("admin")->name("admin.")->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    })->middleware(['auth', 'verified', 'admin'])->name('dashboard');
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UsersController::class, 'list'])->name('users.list');
+        Route::delete('/users/delete/{id}', [UsersController::class, 'delete'])->name('users.delete');
     });
 });
 
