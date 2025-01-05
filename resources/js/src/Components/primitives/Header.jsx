@@ -7,6 +7,8 @@ import {
     Settings,
 } from "@mui/icons-material";
 import Profile from "../common/Profile";
+import { router, usePage } from "@inertiajs/react";
+import { Button } from "@mui/material";
 
 const Searchbar = () => {
     return (
@@ -21,6 +23,7 @@ const Searchbar = () => {
 };
 
 const Header = () => {
+    const user = usePage().props.auth.user;
     return (
         <header className="w-full ">
             <Container className="flex items-center py-[16px] justify-between">
@@ -39,9 +42,20 @@ const Header = () => {
                     />
                 </div>
                 <Searchbar />
+
                 <div className=" flex items-center gap-[24px]">
                     <Settings />
-                    <Profile />
+                    {user ? (
+                        <Profile />
+                    ) : (
+                        <Button
+                            onClick={() => {
+                                router.visit(route("login"));
+                            }}
+                        >
+                            Sign in
+                        </Button>
+                    )}
                 </div>
             </Container>
         </header>

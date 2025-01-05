@@ -4,19 +4,55 @@ import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 import SelectInput from "@/src/Components/admin/primitives/SelectInput";
 import TextInput from "@/src/Components/admin/primitives/TextInput";
 import { Transition } from "@headlessui/react";
-import { useForm, usePage } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 import { ImageOutlined } from "@mui/icons-material";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
-export default function UpdateProfileInformation({ className = "" }) {
-    const user = usePage().props.auth.user;
-    const [avatarPreview, setAvatarPreview] = useState(
-        user.avatar || "/images/default-avatar.jpg"
-    );
-
+export default function FormEditUserInfo({ user, className = "" }) {
+    const [avatarPreview, setAvatarPreview] = useState(user.avatar);
     const [countries, setCountries] = useState([]);
     const [isCountriesLoading, setIsCountriesLoading] = useState(true);
+
+    console.log({ user });
+
+    const { data, setData, post, errors, processing, recentlySuccessful } =
+        useForm({
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            gender: user.gender,
+            nationality: user.nationality,
+            birth_date: user?.birth_date,
+        });
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(
+            route("admin.users.update", {
+                id: user?.id,
+            })
+        );
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (!file.type.startsWith("image/")) {
+                alert("Please select an image file");
+                return;
+            }
+
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            if (file.size > maxSize) {
+                alert("File size should be less than 2MB");
+                return;
+            }
+
+            setData("avatar", file);
+            setAvatarPreview(URL.createObjectURL(file));
+        }
+    };
 
     useEffect(() => {
         axios
@@ -40,39 +76,6 @@ export default function UpdateProfileInformation({ className = "" }) {
             });
     }, []);
 
-    const { data, setData, post, errors, processing, recentlySuccessful } =
-        useForm({
-            name: user?.name,
-            email: user?.email,
-            gender: user?.gender,
-            nationality: user?.nationality,
-            birth_date: user?.birth_date,
-        });
-
-    const submit = (e) => {
-        e.preventDefault();
-        post(route("profile.update"));
-    };
-
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            if (!file.type.startsWith("image/")) {
-                alert("Please select an image file");
-                return;
-            }
-
-            const maxSize = 2 * 1024 * 1024; // 2MB
-            if (file.size > maxSize) {
-                alert("File size should be less than 2MB");
-                return;
-            }
-
-            setData("avatar", file);
-            setAvatarPreview(URL.createObjectURL(file));
-        }
-    };
-
     useEffect(() => {
         return () => {
             if (avatarPreview && avatarPreview.startsWith("blob:")) {
@@ -87,44 +90,46 @@ export default function UpdateProfileInformation({ className = "" }) {
         }
     }, [user]);
 
-    console.log({ data });
-
     return (
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
                     Profile Information
                 </h2>
+
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Update your account's profile information.
+                    Update profile information {user?.name}
                 </p>
             </header>
 
-            <form
-                onSubmit={submit}
-                className="mt-6 space-y-6"
-                encType="multipart/form-data"
-            >
+            <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
                     <InputLabel htmlFor="avatar" value="Avatar" />
 
                     <div className="mt-1">
-                        <div className="flex items-center w-[120px] h-[120px] rounded-[8px] overflow-hidden group relative cursor-pointer">
-                            <label
-                                htmlFor="avatar"
-                                className="cursor-pointer absolute z-10 inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                            >
-                                <ImageOutlined className="text-white" />
-                            </label>
-                            <img
-                                src={avatarPreview}
-                                alt="Profile avatar"
-                                className="w-full h-full object-cover object-center"
-                            />
-                        </div>
+                        {/* no images */}
+
+                        {avatarPreview && (
+                            <div className="flex items-center w-[120px] h-[120px] rounded-[8px] overflow-hidden group relative cursor-pointer">
+                                <label
+                                    htmlFor="avatar"
+                                    className="cursor-pointer absolute z-10 inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                >
+                                    <ImageOutlined className="text-white" />
+                                </label>
+                                <img
+                                    src={avatarPreview}
+                                    alt="Current avatar"
+                                    className="w-full h-full object-cover object-center"
+                                    onError={(e) => {
+                                        console.log(e);
+                                    }}
+                                />
+                            </div>
+                        )}
 
                         <input
-                            className="hidden"
+                            className={avatarPreview ? "hidden" : ""}
                             type="file"
                             accept="image/*"
                             id="avatar"
@@ -133,12 +138,12 @@ export default function UpdateProfileInformation({ className = "" }) {
                         />
                     </div>
 
-                    <InputError className="mt-2" message={errors.avatar} />
+                    <InputError className="mt-2" message={errors.name} />
                 </div>
 
-                {/* Rest of the form remains the same */}
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
+
                     <TextInput
                         id="name"
                         className="mt-1 block w-full"
@@ -148,11 +153,28 @@ export default function UpdateProfileInformation({ className = "" }) {
                         isFocused
                         autoComplete="name"
                     />
+
                     <InputError className="mt-2" message={errors.name} />
                 </div>
 
                 <div>
+                    <InputLabel htmlFor="role" value="Role" />
+
+                    <SelectInput
+                        options={[
+                            { value: "artist", label: "Artist" },
+                            { value: "user", label: "User" },
+                        ]}
+                        onChange={(e) => setData("role", e.target.value)}
+                        value={data.role}
+                    />
+
+                    <InputError className="mt-2" message={errors.role} />
+                </div>
+
+                <div>
                     <InputLabel htmlFor="email" value="Email" />
+
                     <TextInput
                         id="email"
                         type="email"
@@ -162,6 +184,7 @@ export default function UpdateProfileInformation({ className = "" }) {
                         required
                         autoComplete="username"
                     />
+
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 

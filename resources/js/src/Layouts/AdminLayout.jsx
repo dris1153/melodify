@@ -1,17 +1,15 @@
 import ApplicationLogo from "@/src/Components/ApplicationLogo";
 import Dropdown from "@/src/Components/Dropdown";
-import NavLink from "@/src/Components/NavLink";
+import NavLink from "@/src/Components/admin/common/NavLink";
 import ResponsiveNavLink from "@/src/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
-import { useState } from "react";
 import GlobalProvider from "../Contexts/GlobalProvider";
+import { useState } from "react";
 
 export default function AdminLayout({ header, children }) {
     const user = usePage().props.auth.user;
-
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-
     return (
         <GlobalProvider>
             <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -45,6 +43,18 @@ export default function AdminLayout({ header, children }) {
                                         </NavLink>
                                         <NavLink
                                             href={route("admin.dashboard")}
+                                            dropdown={[
+                                                {
+                                                    href: route("profile.edit"),
+                                                    label: "Category",
+                                                },
+                                                // {
+                                                //     href: route("logout"),
+                                                //     label: "Log Out",
+                                                //     // method: "post",
+                                                //     // as: "button",
+                                                // },
+                                            ]}
                                         >
                                             Musics
                                         </NavLink>

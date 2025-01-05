@@ -24,12 +24,15 @@ Route::prefix("admin")->name("admin.")->group(function () {
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UsersController::class, 'list'])->name('users.list');
         Route::delete('/users/delete/{id}', [UsersController::class, 'delete'])->name('users.delete');
+        Route::get('/users/edit/{id}', [UsersController::class, 'edit'])->name('users.edit');
+        Route::post('/users/update/{id}', [UsersController::class, 'update'])->name('users.update');
+        Route::post('/users/reset-password/{id}', [UsersController::class, 'reset_password'])->name('users.reset-password');
     });
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -13,8 +14,16 @@ class UsersController extends Controller
     public function list()
     {
         $users = User::where('id', '!=', Auth::user()->id)->get();
-        return Inertia::render('Admin/Users', [
+        return Inertia::render('Admin/Users/Index', [
             'users' => $users
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+        return Inertia::render('Admin/Users/Edit', props: [
+            'user' => $user
         ]);
     }
 
@@ -23,5 +32,40 @@ class UsersController extends Controller
         $user = User::find($id);
         $user->delete();
         return redirect()->route('admin.users.list');
+    }
+
+    public function update($id): RedirectResponse
+    {
+        $user = User::find($id);
+        $request = request();
+
+        $user->fill($request->all());
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+        // Handle avatar upload if present
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar if it exists
+            if ($user->avatar) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+
+            // Store new avatar
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = asset("/storage/{$path}");
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users.edit', ['id' => $id]);
+    }
+
+    public function reset_password($id): RedirectResponse
+    {
+        $user = User::find($id);
+        $user->password = bcrypt('12345678');
+        $user->save();
+        return redirect()->route('admin.users.edit', ['id' => $id]);
     }
 }

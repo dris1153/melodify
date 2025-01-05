@@ -1,8 +1,8 @@
-import DangerButton from "@/src/Components/DangerButton";
+import DangerButton from "@/src/Components/admin/primitives/DangerButton";
 import Modal from "@/src/Components/Modal";
-import SecondaryButton from "@/src/Components/SecondaryButton";
+import SecondaryButton from "@/src/Components/admin/primitives/SecondaryButton";
 import AdminLayout from "@/src/Layouts/AdminLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import {
     Table,
     TableBody,
@@ -16,15 +16,7 @@ import toast from "react-hot-toast";
 const Users = ({ users }) => {
     const [userSelected, setUserSelected] = React.useState(null);
 
-    const {
-        data,
-        setData,
-        delete: destroy,
-        processing,
-        reset,
-        errors,
-        clearErrors,
-    } = useForm({});
+    const { delete: destroy, processing, reset } = useForm({});
 
     const deleteUser = (e) => {
         e.preventDefault();
@@ -123,9 +115,15 @@ const Users = ({ users }) => {
                                         <TableCell>{row?.role}</TableCell>
                                         <TableCell>{row?.gender}</TableCell>
                                         <TableCell>
-                                            <button className="text-blue-600 dark:text-blue-400">
+                                            <Link
+                                                className="text-blue-600 dark:text-blue-400"
+                                                href={route(
+                                                    "admin.users.edit",
+                                                    { id: row.id }
+                                                )}
+                                            >
                                                 Edit
-                                            </button>
+                                            </Link>
                                         </TableCell>
                                         <TableCell>
                                             <button

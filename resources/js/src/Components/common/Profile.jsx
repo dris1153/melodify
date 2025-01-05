@@ -1,13 +1,19 @@
+import { Link, usePage } from "@inertiajs/react";
 import React from "react";
 
 const Profile = () => {
+    const user = usePage().props.auth.user;
+
     return (
-        <div className="flex items-center gap-[10px] cursor-pointer">
+        <Link
+            className="flex items-center gap-[10px] cursor-pointer"
+            href={route("profile.edit")}
+        >
             <img
-                src="/images/avatar.jpg"
+                src={user?.avatar}
                 className="w-[42px] h-[42px] rounded-full"
             />
-        </div>
+        </Link>
     );
 };
 
