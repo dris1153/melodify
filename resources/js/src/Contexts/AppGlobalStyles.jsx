@@ -11,14 +11,14 @@ export const ColorModeContext = React.createContext({});
  * @param param0
  * @returns
  */
-export function AppGlobalStyles({ children }) {
+export function AppGlobalStyles({ children, backgroundColor }) {
     const theme = useMemo(() => {
         const themeCreate = createTheme({
             components: {
                 MuiCssBaseline: {
                     styleOverrides: {
                         body: {
-                            backgroundColor: "#2c2c2c",
+                            backgroundColor: backgroundColor || "#2c2c2c",
                             margin: 0,
                             padding: 0,
                         },

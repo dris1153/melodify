@@ -158,60 +158,68 @@ const CategoryEdit = ({ category }) => {
                             </form>
                         </section>
                     </div>
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                        <section className="space-y-6">
-                            <header>
-                                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                    Delete Category
-                                </h2>
-
-                                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                    Once your category is deleted, all of its
-                                    resources and data will be permanently
-                                    deleted. Before deleting your category,
-                                    please download any data or information that
-                                    you wish to retain.
-                                </p>
-                            </header>
-
-                            <DangerButton onClick={confirmCategoryDeletion}>
-                                Delete Category
-                            </DangerButton>
-
-                            <Modal
-                                show={confirmingCategoryDeletion}
-                                onClose={closeModal}
-                            >
-                                <form onSubmit={deleteCategory} className="p-6">
+                    {category && (
+                        <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
+                            <section className="space-y-6">
+                                <header>
                                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                        Are you sure you want to delete{" "}
-                                        {category?.name}?
+                                        Delete Category
                                     </h2>
 
                                     <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                        Once the category is deleted, all of its
-                                        resources and data will be permanently
-                                        deleted. Before deleting the category,
-                                        please download any data or information
-                                        that you wish to retain.
+                                        Once your category is deleted, all of
+                                        its resources and data will be
+                                        permanently deleted. Before deleting
+                                        your category, please download any data
+                                        or information that you wish to retain.
                                     </p>
+                                </header>
 
-                                    <div className="mt-6 flex justify-end">
-                                        <SecondaryButton onClick={closeModal}>
-                                            Cancel
-                                        </SecondaryButton>
+                                <DangerButton onClick={confirmCategoryDeletion}>
+                                    Delete Category
+                                </DangerButton>
 
-                                        <DangerButton
-                                            className="ms-3"
-                                            disabled={processingDelete}
-                                        >
-                                            Delete Category
-                                        </DangerButton>
-                                    </div>
-                                </form>
-                            </Modal>
-                        </section>
-                    </div>
+                                <Modal
+                                    show={confirmingCategoryDeletion}
+                                    onClose={closeModal}
+                                >
+                                    <form
+                                        onSubmit={deleteCategory}
+                                        className="p-6"
+                                    >
+                                        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                            Are you sure you want to delete{" "}
+                                            {category?.name}?
+                                        </h2>
+
+                                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                            Once the category is deleted, all of
+                                            its resources and data will be
+                                            permanently deleted. Before deleting
+                                            the category, please download any
+                                            data or information that you wish to
+                                            retain.
+                                        </p>
+
+                                        <div className="mt-6 flex justify-end">
+                                            <SecondaryButton
+                                                onClick={closeModal}
+                                            >
+                                                Cancel
+                                            </SecondaryButton>
+
+                                            <DangerButton
+                                                className="ms-3"
+                                                disabled={processingDelete}
+                                            >
+                                                Delete Category
+                                            </DangerButton>
+                                        </div>
+                                    </form>
+                                </Modal>
+                            </section>
+                        </div>
+                    )}
                 </div>
             </div>
         </AdminLayout>

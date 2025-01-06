@@ -68,4 +68,36 @@ class UsersController extends Controller
         $user->save();
         return redirect()->route('admin.users.edit', ['id' => $id]);
     }
+
+    public function create()
+    {
+        return Inertia::render('Admin/Users/Edit');
+    }
+
+    public function create_handle(): RedirectResponse
+    {
+        $request = request();
+        $user = new User();
+        $user->fill($request->all());
+        $user->password = bcrypt('12345678');
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+        // Handle avatar upload if present
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar if it exists
+            if ($user->avatar) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+
+            // Store new avatar
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = asset("/storage/{$path}");
+        }
+
+
+        $user->save();
+        return redirect()->route('admin.users.list');
+    }
 }

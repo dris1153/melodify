@@ -2,7 +2,7 @@ import DangerButton from "@/src/Components/admin/primitives/DangerButton";
 import Modal from "@/src/Components/Modal";
 import SecondaryButton from "@/src/Components/admin/primitives/SecondaryButton";
 import AdminLayout from "@/src/Layouts/AdminLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import {
     Table,
     TableBody,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import toast from "react-hot-toast";
+import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 
 const Users = ({ users }) => {
     const [userSelected, setUserSelected] = React.useState(null);
@@ -41,9 +42,18 @@ const Users = ({ users }) => {
     return (
         <AdminLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Users
-                </h2>
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+                        Users
+                    </h2>
+                    <PrimaryButton
+                        onClick={() => {
+                            router.visit(route("admin.users.create"));
+                        }}
+                    >
+                        Add User
+                    </PrimaryButton>
+                </div>
             }
         >
             <Head title="Dashboard" />

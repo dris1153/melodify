@@ -14,7 +14,7 @@ import React from "react";
 import toast from "react-hot-toast";
 import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 
-const Musics = ({ musics }) => {
+const Musics = ({ songs }) => {
     // const [userSelected, setUserSelected] = React.useState(null);
 
     // const { delete: destroy, processing, reset } = useForm({});
@@ -44,21 +44,21 @@ const Musics = ({ musics }) => {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                        Musics
+                        Songs
                     </h2>
                     <PrimaryButton
                         onClick={() => {
-                            router.visit(route("admin.categories.create"));
+                            router.visit(route("admin.songs.create"));
                         }}
                     >
-                        Add Category
+                        Add Song
                     </PrimaryButton>
                 </div>
             }
         >
             <Head title="Musics" />
-
-            {/* <Modal show={userSelected} onClose={closeModal}>
+            {/* 
+            <Modal show={userSelected} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
                         Are you sure you want to delete {userSelected?.name}?
@@ -81,7 +81,7 @@ const Musics = ({ musics }) => {
                         </DangerButton>
                     </div>
                 </form>
-            </Modal>
+            </Modal> */}
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -90,16 +90,20 @@ const Musics = ({ musics }) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell component="th">Id</TableCell>
-                                    <TableCell component="th">Name</TableCell>
-                                    <TableCell component="th">Email</TableCell>
-                                    <TableCell component="th">Role</TableCell>
-                                    <TableCell component="th">Gender</TableCell>
+                                    <TableCell component="th">Title</TableCell>
+                                    <TableCell component="th">
+                                        Artists
+                                    </TableCell>
+                                    <TableCell component="th">Genres</TableCell>
+                                    <TableCell component="th">
+                                        Duration
+                                    </TableCell>
                                     <TableCell component="th">Edit</TableCell>
                                     <TableCell component="th">Delete</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {users.map((row) => (
+                                {songs.map((row) => (
                                     <TableRow
                                         key={row.name}
                                         sx={{
@@ -110,20 +114,38 @@ const Musics = ({ musics }) => {
                                         <TableCell>{row?.id}</TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-[8px]">
-                                                {row?.avatar && (
+                                                {row?.image && (
                                                     <img
-                                                        src={row?.avatar}
+                                                        src={row?.image}
                                                         className="w-[36px] h-[36px] overflow-hidden rounded-full object-cover object-center"
                                                     />
                                                 )}
                                                 <span className="font-[500]">
-                                                    {row?.name}
+                                                    {row?.title}
                                                 </span>
                                             </div>
                                         </TableCell>
-                                        <TableCell>{row?.email}</TableCell>
-                                        <TableCell>{row?.role}</TableCell>
-                                        <TableCell>{row?.gender}</TableCell>
+                                        <TableCell>
+                                            {row?.artists
+                                                ?.map?.(
+                                                    (artist) => artist?.name
+                                                )
+                                                ?.join(", ")}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row?.genres
+                                                ?.map?.((genre) => genre?.name)
+                                                ?.join(", ")}
+                                        </TableCell>
+                                        <TableCell>
+                                            {Math.floor(row?.duration / 60)
+                                                ?.toString()
+                                                ?.padStart(2, "0")}
+                                            :
+                                            {(row?.duration % 60)
+                                                ?.toString()
+                                                ?.padStart(2, "0")}
+                                        </TableCell>
                                         <TableCell>
                                             <Link
                                                 className="text-blue-600 dark:text-blue-400"
@@ -139,7 +161,7 @@ const Musics = ({ musics }) => {
                                             <button
                                                 className="text-red-600 dark:text-red-400"
                                                 onClick={() => {
-                                                    setUserSelected(row);
+                                                    // setUserSelected(row);
                                                 }}
                                             >
                                                 Delete
@@ -151,7 +173,7 @@ const Musics = ({ musics }) => {
                         </Table>
                     </div>
                 </div>
-            </div> */}
+            </div>
         </AdminLayout>
     );
 };

@@ -6,34 +6,26 @@ import TextInput from "@/src/Components/admin/primitives/TextInput";
 import { Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { ImageOutlined } from "@mui/icons-material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function FormEditUserInfo({ user, className = "" }) {
-    const [avatarPreview, setAvatarPreview] = useState(user.avatar);
-    const [countries, setCountries] = useState([]);
-    const [isCountriesLoading, setIsCountriesLoading] = useState(true);
+export default function FormEditSongInfo({
+    song,
+    genres,
+    artists,
+    className = "",
+}) {
+    const [imagePreview, setImagePreview] = useState(song?.image);
+    const [audioPreview, setAudioPreview] = useState(song?.audio);
 
     const { data, setData, post, errors, processing, recentlySuccessful } =
-        useForm({
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            gender: user.gender,
-            nationality: user.nationality,
-            birth_date: user?.birth_date,
-        });
+        useForm({});
 
     const submit = (e) => {
         e.preventDefault();
-        post(
-            route("admin.users.update", {
-                id: user?.id,
-            })
-        );
+        post(route("admin.songs.create-handle"));
     };
 
-    const handleFileChange = (e) => {
+    const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             if (!file.type.startsWith("image/")) {
@@ -47,76 +39,73 @@ export default function FormEditUserInfo({ user, className = "" }) {
                 return;
             }
 
-            setData("avatar", file);
-            setAvatarPreview(URL.createObjectURL(file));
+            setData("image", file);
+            setImagePreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleAudioChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (!file.type.startsWith("audio/")) {
+                alert("Please select an audio file");
+                return;
+            }
+
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            if (file.size > maxSize) {
+                alert("File size should be less than 10MB");
+                return;
+            }
+
+            setData("audio", file);
+            setAudioPreview(URL.createObjectURL(file));
         }
     };
 
     useEffect(() => {
-        axios
-            .get("https://restcountries.com/v3.1/all")
-            .then((response) => {
-                const countryOptions = response.data.map((country) => ({
-                    value: country.cca2.toLowerCase(),
-                    label: country.name.common,
-                }));
-                setCountries(
-                    countryOptions.sort((a, b) =>
-                        a.label.localeCompare(b.label)
-                    )
-                );
-            })
-            .catch((error) => {
-                console.error("Error fetching countries:", error);
-            })
-            .finally(() => {
-                setIsCountriesLoading(false);
-            });
-    }, []);
-
-    useEffect(() => {
         return () => {
-            if (avatarPreview && avatarPreview.startsWith("blob:")) {
-                URL.revokeObjectURL(avatarPreview);
+            if (imagePreview && imagePreview.startsWith("blob:")) {
+                URL.revokeObjectURL(imagePreview);
             }
         };
-    }, [avatarPreview]);
+    }, [imagePreview]);
 
     useEffect(() => {
-        if (user?.avatar) {
-            setAvatarPreview(user.avatar);
+        if (song?.image) {
+            setImagePreview(song?.image);
         }
-    }, [user]);
+    }, [song]);
 
     return (
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Profile Information
+                    Song Information
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                {/* <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Update profile information {user?.name}
-                </p>
+                </p> */}
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="avatar" value="Avatar" />
+                    <InputLabel htmlFor="image" value="Image" />
 
                     <div className="mt-1">
                         {/* no images */}
 
-                        {avatarPreview && (
+                        {imagePreview && (
                             <div className="flex items-center w-[120px] h-[120px] rounded-[8px] overflow-hidden group relative cursor-pointer">
                                 <label
-                                    htmlFor="avatar"
+                                    htmlFor="image"
                                     className="cursor-pointer absolute z-10 inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                                 >
                                     <ImageOutlined className="text-white" />
                                 </label>
                                 <img
-                                    src={avatarPreview}
+                                    src={imagePreview}
                                     alt="Current avatar"
                                     className="w-full h-full object-cover object-center"
                                     onError={(e) => {
@@ -127,34 +116,119 @@ export default function FormEditUserInfo({ user, className = "" }) {
                         )}
 
                         <input
-                            className={avatarPreview ? "hidden" : ""}
+                            className={imagePreview ? "hidden" : ""}
                             type="file"
                             accept="image/*"
-                            id="avatar"
-                            name="avatar"
-                            onChange={handleFileChange}
+                            id="image"
+                            name="image"
+                            onChange={handleImageChange}
                         />
                     </div>
 
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError className="mt-2" message={errors.image} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="title" value="Title" />
 
                     <TextInput
-                        id="name"
+                        id="title"
                         className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData("name", e.target.value)}
+                        value={data.title}
+                        onChange={(e) => setData("title", e.target.value)}
                         required
                         isFocused
-                        autoComplete="name"
+                        autoComplete="title"
                     />
 
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError className="mt-2" message={errors.title} />
                 </div>
 
+                <div>
+                    <InputLabel htmlFor="artists" value="Artists" />
+
+                    <SelectInput
+                        isMulti
+                        isSearchable
+                        options={
+                            artists
+                                ? artists.map((artist) => ({
+                                      value: artist?.id,
+                                      label: artist?.name,
+                                  }))
+                                : []
+                        }
+                        onChange={(selected) => {
+                            setData(
+                                "artists",
+                                selected.map((s) => s.value)
+                            );
+                        }}
+                        value={data.artists}
+                    />
+
+                    <InputError className="mt-2" message={errors.title} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="genres" value="Genres" />
+
+                    <SelectInput
+                        isMulti
+                        isSearchable
+                        options={
+                            genres
+                                ? genres.map((genre) => ({
+                                      value: genre?.id,
+                                      label: genre?.name,
+                                  }))
+                                : []
+                        }
+                        onChange={(selected) => {
+                            setData(
+                                "genres",
+                                selected.map((s) => s.value)
+                            );
+                        }}
+                        value={data.genres}
+                    />
+
+                    <InputError className="mt-2" message={errors.genres} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="audio" value="Audio" />
+
+                    <div className="mt-1">
+                        <input
+                            // className={audioPreview ? "hidden" : ""}
+                            type="file"
+                            accept="audio/*"
+                            id="audio"
+                            name="audio"
+                            onChange={handleAudioChange}
+                        />
+                        {audioPreview && (
+                            <div className="flex items-center w-full rounded-[8px] overflow-hidden group relative cursor-pointer mt-2">
+                                {/* <label
+                                    htmlFor="audio"
+                                    className="cursor-pointer absolute z-10 inset-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                >
+                                    <ImageOutlined className="text-white" />
+                                </label> */}
+                                <audio
+                                    src={audioPreview}
+                                    controls
+                                    className="w-full"
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    <InputError className="mt-2" message={errors.image} />
+                </div>
+
+                {/* 
                 <div>
                     <InputLabel htmlFor="role" value="Role" />
 
@@ -220,34 +294,7 @@ export default function FormEditUserInfo({ user, className = "" }) {
                         required
                     />
                     <InputError className="mt-2" message={errors.birth_date} />
-                </div>
-
-                <div>
-                    <div className="flex items-center gap-[8px]">
-                        <InputLabel htmlFor="nationality" value="Nationality" />
-                        {data?.nationality && (
-                            <img
-                                className="h-[18px]"
-                                src={`https://flagcdn.com/32x24/${data?.nationality}.png`}
-                            />
-                        )}
-                    </div>
-                    {isCountriesLoading ? (
-                        <div>Loading...</div>
-                    ) : (
-                        <SelectInput
-                            options={[
-                                { value: "", label: "Select Nationality" },
-                                ...countries,
-                            ]}
-                            onChange={(e) =>
-                                setData("nationality", e.target.value)
-                            }
-                            value={data.nationality}
-                        />
-                    )}
-                    <InputError className="mt-2" message={errors.nationality} />
-                </div>
+                </div> */}
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>

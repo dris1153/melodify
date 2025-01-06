@@ -8,29 +8,34 @@ import { useForm } from "@inertiajs/react";
 import { ImageOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Select from "react-select";
 
 export default function FormEditUserInfo({ user, className = "" }) {
-    const [avatarPreview, setAvatarPreview] = useState(user.avatar);
+    const [avatarPreview, setAvatarPreview] = useState(user?.avatar);
     const [countries, setCountries] = useState([]);
     const [isCountriesLoading, setIsCountriesLoading] = useState(true);
 
     const { data, setData, post, errors, processing, recentlySuccessful } =
         useForm({
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            gender: user.gender,
-            nationality: user.nationality,
+            name: user?.name,
+            email: user?.email,
+            role: user?.role,
+            gender: user?.gender,
+            nationality: user?.nationality,
             birth_date: user?.birth_date,
         });
 
     const submit = (e) => {
         e.preventDefault();
-        post(
-            route("admin.users.update", {
-                id: user?.id,
-            })
-        );
+        if (user?.id) {
+            post(
+                route("admin.users.update", {
+                    id: user?.id,
+                })
+            );
+        } else {
+            post(route("admin.users.create-handle"));
+        }
     };
 
     const handleFileChange = (e) => {
@@ -84,7 +89,7 @@ export default function FormEditUserInfo({ user, className = "" }) {
 
     useEffect(() => {
         if (user?.avatar) {
-            setAvatarPreview(user.avatar);
+            setAvatarPreview(user?.avatar);
         }
     }, [user]);
 
@@ -95,9 +100,11 @@ export default function FormEditUserInfo({ user, className = "" }) {
                     Profile Information
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Update profile information {user?.name}
-                </p>
+                {user && (
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        Update profile information {user?.name}
+                    </p>
+                )}
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
@@ -136,11 +143,11 @@ export default function FormEditUserInfo({ user, className = "" }) {
                         />
                     </div>
 
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError className="mt-2" message={errors?.avatar} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="Name" required />
 
                     <TextInput
                         id="name"
@@ -156,12 +163,13 @@ export default function FormEditUserInfo({ user, className = "" }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="role" value="Role" />
+                    <InputLabel htmlFor="role" value="Role" required />
 
                     <SelectInput
                         options={[
-                            { value: "artist", label: "Artist" },
+                            { value: "", label: "Select Role" },
                             { value: "user", label: "User" },
+                            { value: "artist", label: "Artist" },
                         ]}
                         onChange={(e) => setData("role", e.target.value)}
                         value={data.role}
@@ -171,14 +179,14 @@ export default function FormEditUserInfo({ user, className = "" }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="Email" required />
 
                     <TextInput
                         id="email"
                         type="email"
                         className="mt-1 block w-full"
                         value={data.email}
-                        onChange={(e) => setData("email", e.target.value)}
+                        onChange={(e) => setData("email", e?.value)}
                         required
                         autoComplete="username"
                     />
@@ -196,7 +204,11 @@ export default function FormEditUserInfo({ user, className = "" }) {
                             { value: "female", label: "Female" },
                             { value: "other", label: "Other" },
                         ]}
-                        onChange={(e) => setData("gender", e.target.value)}
+                        onChange={(e) => {
+                            console.log(e);
+                            setData("gender", e?.value);
+                        }}
+                        name="gender"
                         value={data.gender}
                     />
 
@@ -217,7 +229,6 @@ export default function FormEditUserInfo({ user, className = "" }) {
                                 : ""
                         }
                         onChange={(e) => setData("birth_date", e.target.value)}
-                        required
                     />
                     <InputError className="mt-2" message={errors.birth_date} />
                 </div>
@@ -240,9 +251,7 @@ export default function FormEditUserInfo({ user, className = "" }) {
                                 { value: "", label: "Select Nationality" },
                                 ...countries,
                             ]}
-                            onChange={(e) =>
-                                setData("nationality", e.target.value)
-                            }
+                            onChange={(e) => setData("nationality", e?.value)}
                             value={data.nationality}
                         />
                     )}

@@ -25,3 +25,9 @@ input:focus {
     border: none;
     box-shadow: none;
 }
+
+.react-select input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none !important;
+}

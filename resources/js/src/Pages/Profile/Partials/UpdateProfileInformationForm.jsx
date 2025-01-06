@@ -174,7 +174,7 @@ export default function UpdateProfileInformation({ className = "", user }) {
                             { value: "female", label: "Female" },
                             { value: "other", label: "Other" },
                         ]}
-                        onChange={(e) => setData("gender", e.target.value)}
+                        onChange={(e) => setData("gender", e?.value)}
                         value={data.gender}
                     />
 
@@ -218,9 +218,7 @@ export default function UpdateProfileInformation({ className = "", user }) {
                                 { value: "", label: "Select Nationality" },
                                 ...countries,
                             ]}
-                            onChange={(e) =>
-                                setData("nationality", e.target.value)
-                            }
+                            onChange={(e) => setData("nationality", e?.value)}
                             value={data.nationality}
                         />
                     )}

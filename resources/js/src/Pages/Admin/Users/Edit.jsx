@@ -10,7 +10,7 @@ const UserEdit = ({ user }) => {
         <AdminLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    {user?.name}
+                    {user?.name || "Create User"}
                 </h2>
             }
         >
@@ -21,15 +21,22 @@ const UserEdit = ({ user }) => {
                     <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
                         <FormEditUserInfo className="max-w-xl" user={user} />
                     </div>
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800 ">
-                        <FormResetPasswordUser
-                            className="max-w-xl"
-                            user={user}
-                        />
-                    </div>
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800 ">
-                        <FormDeleteUser className="max-w-xl" user={user} />
-                    </div>
+                    {user && (
+                        <>
+                            <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800 ">
+                                <FormResetPasswordUser
+                                    className="max-w-xl"
+                                    user={user}
+                                />
+                            </div>
+                            <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800 ">
+                                <FormDeleteUser
+                                    className="max-w-xl"
+                                    user={user}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </AdminLayout>

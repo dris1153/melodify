@@ -11,7 +11,7 @@ export default function AdminLayout({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     return (
-        <GlobalProvider>
+        <GlobalProvider backgroundColor="#f3f4f6">
             <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
                 <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -51,9 +51,9 @@ export default function AdminLayout({ header, children }) {
                                                 },
                                                 {
                                                     href: route(
-                                                        "admin.categories.list"
+                                                        "admin.songs.list"
                                                     ),
-                                                    label: "Music",
+                                                    label: "Song",
                                                 },
                                             ]}
                                         >

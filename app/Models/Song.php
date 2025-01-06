@@ -20,11 +20,11 @@ class Song extends Model
 
     public function artists()
     {
-        return $this->belongsToMany(User::class, 'song_artist');
+        return $this->belongsToMany(User::class, 'song_artist', 'song_id', 'artist_id');
     }
 
     public function genres()
     {
-        return $this->belongsToMany(Category::class, 'song_genre');
+        return $this->belongsToMany(Category::class, 'song_genre', 'song_id', 'genre_id');
     }
 }

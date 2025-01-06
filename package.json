@@ -30,6 +30,7 @@
         "clsx": "^2.1.1",
         "moment": "^2.30.1",
         "react-hot-toast": "^2.4.1",
+        "react-select": "^5.9.0",
         "tailwind-merge": "^2.6.0",
         "ts-loader": "^9.5.1",
         "typescript": "^5.7.2"

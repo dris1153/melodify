@@ -1,21 +1,23 @@
+import { cn } from "@/helpers/base";
+import { Link } from "@inertiajs/react";
 import React from "react";
 
 const ListItems = [
-    {
-        title: "Home",
-        icon: "home",
-        url: "/",
-    },
+    // {
+    //     title: "Library",
+    //     icon: "home",
+    //     route: "library",
+    // },
     {
         title: "Discover",
         icon: "discover",
-        url: "/discover",
+        route: "discover",
     },
-    {
-        title: "Albums",
-        icon: "album",
-        url: "/albums",
-    },
+    // {
+    //     title: "Albums",
+    //     icon: "album",
+    //     route: "discover",
+    // },
 ];
 
 const Sidebar = () => {
@@ -24,20 +26,44 @@ const Sidebar = () => {
             <h1 className="text-[24px] font-[700] ml-[32px]">Melodify</h1>
             <div className="flex flex-col mt-[28px]">
                 {ListItems?.map((item, index) => (
-                    <a
+                    <Link
                         key={index}
-                        href={item.link}
-                        className="flex items-center py-[8px] pl-[40px] hover:bg-[#383838] group cursor-pointer h-[64px]"
+                        href={route(item?.route)}
+                        className={cn(
+                            "flex items-center py-[8px] pl-[40px] hover:bg-[#383838] group cursor-pointer h-[64px]",
+                            {
+                                "bg-[#383838] pointer-events-none":
+                                    route().current(item?.route),
+                            }
+                        )}
                     >
                         <img
                             src={`/images/sidebar-icons/${item?.icon}.svg`}
-                            className="grayscale group-hover:grayscale-0"
+                            className={cn("grayscale group-hover:grayscale-0", {
+                                "grayscale-0": route().current(item?.route),
+                            })}
                         />
-                        <span className="text-[16px] ml-[16px] group-hover:text-[#FFC100]">
+                        <span
+                            className={cn(
+                                "text-[16px] ml-[16px] group-hover:text-[#FFC100]",
+                                {
+                                    "text-[#FFC100]": route().current(
+                                        item?.route
+                                    ),
+                                }
+                            )}
+                        >
                             {item.title}
                         </span>
-                        <span className="w-[6px] h-0 bg-[#FFC100] block ml-auto rounded-bl-full rounded-tl-full group-hover:h-[48px] transition-all duration-150"></span>
-                    </a>
+                        <span
+                            className={cn(
+                                "w-[6px] h-0 bg-[#FFC100] block ml-auto rounded-bl-full rounded-tl-full group-hover:h-[48px] transition-all duration-150",
+                                {
+                                    "h-[48px]": route().current(item?.route),
+                                }
+                            )}
+                        ></span>
+                    </Link>
                 ))}
             </div>
         </div>
