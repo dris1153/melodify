@@ -5,7 +5,7 @@ import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 import FormRequestBecomeArtist from "./Partials/FormRequestBecomeArtist";
 
-export default function Edit({ mustVerifyEmail, status }) {
+export default function Edit({ mustVerifyEmail, status, requestingToArtist }) {
     const user = usePage().props.auth.user;
     return (
         <AdminLayout
@@ -24,12 +24,17 @@ export default function Edit({ mustVerifyEmail, status }) {
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
                             className="max-w-xl"
+                            user={user}
                         />
                     </div>
 
                     {user?.role === "user" && (
                         <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                            <FormRequestBecomeArtist className="max-w-xl" />
+                            <FormRequestBecomeArtist
+                                className="max-w-xl"
+                                user={user}
+                                requestingToArtist={requestingToArtist}
+                            />
                         </div>
                     )}
 

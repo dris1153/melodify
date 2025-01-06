@@ -42,18 +42,19 @@ export default function AdminLayout({ header, children }) {
                                             Users
                                         </NavLink>
                                         <NavLink
-                                            href={route("admin.dashboard")}
                                             dropdown={[
                                                 {
-                                                    href: route("profile.edit"),
+                                                    href: route(
+                                                        "admin.categories.list"
+                                                    ),
                                                     label: "Category",
                                                 },
-                                                // {
-                                                //     href: route("logout"),
-                                                //     label: "Log Out",
-                                                //     // method: "post",
-                                                //     // as: "button",
-                                                // },
+                                                {
+                                                    href: route(
+                                                        "admin.categories.list"
+                                                    ),
+                                                    label: "Music",
+                                                },
                                             ]}
                                         >
                                             Musics

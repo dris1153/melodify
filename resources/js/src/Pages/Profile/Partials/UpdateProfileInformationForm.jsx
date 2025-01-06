@@ -9,8 +9,7 @@ import { ImageOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function UpdateProfileInformation({ className = "" }) {
-    const user = usePage().props.auth.user;
+export default function UpdateProfileInformation({ className = "", user }) {
     const [avatarPreview, setAvatarPreview] = useState(
         user.avatar || "/images/default-avatar.jpg"
     );

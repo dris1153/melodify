@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Application;
@@ -22,11 +24,29 @@ Route::prefix("admin")->name("admin.")->group(function () {
         return Inertia::render('Dashboard');
     })->middleware(['auth', 'verified', 'admin'])->name('dashboard');
     Route::middleware('admin')->group(function () {
-        Route::get('/users', [UsersController::class, 'list'])->name('users.list');
-        Route::delete('/users/delete/{id}', [UsersController::class, 'delete'])->name('users.delete');
-        Route::get('/users/edit/{id}', [UsersController::class, 'edit'])->name('users.edit');
-        Route::post('/users/update/{id}', [UsersController::class, 'update'])->name('users.update');
-        Route::post('/users/reset-password/{id}', [UsersController::class, 'reset_password'])->name('users.reset-password');
+        Route::prefix("users")->name("users.")->group(function () {
+            Route::get('/', [UsersController::class, 'list'])->name('list');
+            Route::delete('/delete/{id}', [UsersController::class, 'delete'])->name('delete');
+            Route::get('/edit/{id}', [UsersController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [UsersController::class, 'update'])->name('update');
+            Route::post('/reset-password/{id}', [UsersController::class, 'reset_password'])->name('reset-password');
+        });
+        Route::prefix("categories")->name("categories.")->group(function () {
+            Route::get('/', [CategoryController::class, 'list'])->name('list');
+            Route::delete('/delete/{id}', [CategoryController::class, 'delete'])->name('delete');
+            Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [CategoryController::class, 'update'])->name('update');
+            Route::get('/create', [CategoryController::class, 'create'])->name('create');
+            Route::post('/create-handle', [CategoryController::class, 'create_handle'])->name('create-handle');
+        });
+        Route::prefix("songs")->name("songs.")->group(function () {
+            Route::get('/', [CategoryController::class, 'list'])->name('list');
+            Route::delete('/delete/{id}', [CategoryController::class, 'delete'])->name('delete');
+            Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [CategoryController::class, 'update'])->name('update');
+            Route::get('/create', [CategoryController::class, 'create'])->name('create');
+            Route::post('/create-handle', [CategoryController::class, 'create_handle'])->name('create-handle');
+        });
     });
 });
 
@@ -34,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/artist/request/{user_id}', [ArtistController::class, 'request_become'])->name('profile.request-artist');
 });
 
 

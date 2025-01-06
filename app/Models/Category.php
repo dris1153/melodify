@@ -36,4 +36,9 @@ class Category extends Model
     // {
     //     return $this->hasMany(Music::class);
     // }
+
+    public function songs()
+    {
+        return $this->belongsToMany(Song::class, 'song_genre');
+    }
 }

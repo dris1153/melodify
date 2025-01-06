@@ -12,6 +12,8 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -50,5 +52,10 @@ class User extends Authenticatable
             'password' => 'hashed',
             'birth_date' => 'date',
         ];
+    }
+
+    public function songs()
+    {
+        return $this->belongsToMany(Song::class, 'song_artist');
     }
 }
