@@ -1,6 +1,6 @@
 import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 import TextInput from "@/src/Components/admin/primitives/TextInput";
-import InputLabel from "@/src/Components/InputLabel";
+import InputLabel from "@/src/Components/admin/primitives/InputLabel";
 import GuestLayout from "@/src/Layouts/GuestLayout";
 import { Head, useForm } from "@inertiajs/react";
 

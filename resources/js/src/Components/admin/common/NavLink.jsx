@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
-import Dropdown from "../../Dropdown";
+import Dropdown from "../primitives/Dropdown";
 
 export default function NavLink({
     active = false,

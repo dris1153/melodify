@@ -1,5 +1,5 @@
 import DangerButton from "@/src/Components/admin/primitives/DangerButton";
-import Modal from "@/src/Components/Modal";
+import Modal from "@/src/Components/admin/Modal";
 import SecondaryButton from "@/src/Components/admin/primitives/SecondaryButton";
 import AdminLayout from "@/src/Layouts/AdminLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";

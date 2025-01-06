@@ -13,10 +13,10 @@
 
 .main-layout {
     display: grid;
-    grid-template-columns: 1fr 5fr 1fr;
-    min-height: 100svh;
+    grid-template-columns: 3fr 14fr 4fr;
     transition: all 0.75s;
     color: #fff;
+    flex: 1;
 }
 
 textarea:focus,

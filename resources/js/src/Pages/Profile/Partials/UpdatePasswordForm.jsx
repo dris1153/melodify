@@ -1,5 +1,5 @@
-import InputError from "@/src/Components/InputError";
-import InputLabel from "@/src/Components/InputLabel";
+import InputError from "@/src/Components/admin/primitives/InputError";
+import InputLabel from "@/src/Components/admin/primitives/InputLabel";
 import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 import TextInput from "@/src/Components/admin/primitives/TextInput";
 import { Transition } from "@headlessui/react";

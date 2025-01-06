@@ -1,4 +1,4 @@
-import InputError from "@/src/Components/InputError";
+import InputError from "@/src/Components/admin/primitives/InputError";
 import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 import TextInput from "@/src/Components/admin/primitives/TextInput";
 import GuestLayout from "@/src/Layouts/GuestLayout";

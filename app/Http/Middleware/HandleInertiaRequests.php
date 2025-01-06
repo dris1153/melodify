@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Song;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,6 +30,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $songs = Song::all();
+        $songs->load('artists', 'genres');
         return [
             ...parent::share($request),
             'auth' => [
@@ -36,6 +39,7 @@ class HandleInertiaRequests extends Middleware
                     'avatar' => $request->user()->avatar ?: '/images/default-avatar.jpg',
                 ]) : null,
             ],
+            'songs' => $songs,
         ];
     }
 }

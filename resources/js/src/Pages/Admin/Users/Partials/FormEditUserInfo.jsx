@@ -1,5 +1,5 @@
-import InputError from "@/src/Components/InputError";
-import InputLabel from "@/src/Components/InputLabel";
+import InputError from "@/src/Components/admin/primitives/InputError";
+import InputLabel from "@/src/Components/admin/primitives/InputLabel";
 import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 import SelectInput from "@/src/Components/admin/primitives/SelectInput";
 import TextInput from "@/src/Components/admin/primitives/TextInput";
@@ -97,12 +97,12 @@ export default function FormEditUserInfo({ user, className = "" }) {
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Profile Information
+                    User Information
                 </h2>
 
                 {user && (
                     <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        Update profile information {user?.name}
+                        Update information {user?.name}
                     </p>
                 )}
             </header>
@@ -171,7 +171,7 @@ export default function FormEditUserInfo({ user, className = "" }) {
                             { value: "user", label: "User" },
                             { value: "artist", label: "Artist" },
                         ]}
-                        onChange={(e) => setData("role", e.target.value)}
+                        onChange={(e) => setData("role", e?.value)}
                         value={data.role}
                     />
 
@@ -186,7 +186,7 @@ export default function FormEditUserInfo({ user, className = "" }) {
                         type="email"
                         className="mt-1 block w-full"
                         value={data.email}
-                        onChange={(e) => setData("email", e?.value)}
+                        onChange={(e) => setData("email", e?.target?.value)}
                         required
                         autoComplete="username"
                     />

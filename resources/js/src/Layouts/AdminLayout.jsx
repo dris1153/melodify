@@ -1,7 +1,7 @@
-import ApplicationLogo from "@/src/Components/ApplicationLogo";
-import Dropdown from "@/src/Components/Dropdown";
+import ApplicationLogo from "@/src/Components/admin/ApplicationLogo";
+import Dropdown from "@/src/Components/admin/primitives/Dropdown";
 import NavLink from "@/src/Components/admin/common/NavLink";
-import ResponsiveNavLink from "@/src/Components/ResponsiveNavLink";
+import ResponsiveNavLink from "@/src/Components/admin/common/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
 import GlobalProvider from "../Contexts/GlobalProvider";
 import { useState } from "react";

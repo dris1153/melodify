@@ -1,8 +1,8 @@
 import { cn } from "@/helpers/base";
 import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 import TextInput from "@/src/Components/admin/primitives/TextInput";
-import InputError from "@/src/Components/InputError";
-import InputLabel from "@/src/Components/InputLabel";
+import InputError from "@/src/Components/admin/primitives/InputError";
+import InputLabel from "@/src/Components/admin/primitives/InputLabel";
 import { Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import React from "react";

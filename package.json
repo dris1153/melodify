@@ -33,6 +33,7 @@
         "react-select": "^5.9.0",
         "tailwind-merge": "^2.6.0",
         "ts-loader": "^9.5.1",
-        "typescript": "^5.7.2"
+        "typescript": "^5.7.2",
+        "zustand": "^5.0.2"
     }
 }

@@ -1,4 +1,4 @@
-import Modal from "@/src/Components/Modal";
+import Modal from "@/src/Components/admin/Modal";
 import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 import SecondaryButton from "@/src/Components/admin/primitives/SecondaryButton";
 import { useForm } from "@inertiajs/react";

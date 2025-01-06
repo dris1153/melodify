@@ -1,5 +1,5 @@
 import DangerButton from "@/src/Components/admin/primitives/DangerButton";
-import Modal from "@/src/Components/Modal";
+import Modal from "@/src/Components/admin/Modal";
 import SecondaryButton from "@/src/Components/admin/primitives/SecondaryButton";
 import { useForm } from "@inertiajs/react";
 import { useState } from "react";

@@ -1,7 +1,7 @@
 import DangerButton from "@/src/Components/admin/primitives/DangerButton";
-import InputError from "@/src/Components/InputError";
-import InputLabel from "@/src/Components/InputLabel";
-import Modal from "@/src/Components/Modal";
+import InputError from "@/src/Components/admin/primitives/InputError";
+import InputLabel from "@/src/Components/admin/primitives/InputLabel";
+import Modal from "@/src/Components/admin/Modal";
 import SecondaryButton from "@/src/Components/admin/primitives/SecondaryButton";
 import TextInput from "@/src/Components/admin/primitives/TextInput";
 import { useForm } from "@inertiajs/react";

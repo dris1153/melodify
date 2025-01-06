@@ -6,16 +6,20 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\UsersController;
+use App\Models\Song;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    $newest_songs = Song::orderBy('created_at', 'desc')->limit(10)->get();
+    $newest_songs->load('artists', 'genres');
     return Inertia::render('Discover', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'newestSongs' => $newest_songs
     ]);
 })->name('discover');
 

@@ -77,6 +77,7 @@ class UsersController extends Controller
     public function create_handle(): RedirectResponse
     {
         $request = request();
+
         $user = new User();
         $user->fill($request->all());
         $user->password = bcrypt('12345678');
