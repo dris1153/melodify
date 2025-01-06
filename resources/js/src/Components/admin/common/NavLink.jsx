@@ -11,13 +11,13 @@ export default function NavLink({
 }) {
     if (dropdown) {
         return (
-            <div className="relative inline-flex items-center border-transparent border-b-2 px-1 pt-1 transition duration-150 ease-in-out focus:outline-none hover:border-gray-300 focus:border-gray-300 dark:hover:border-gray-700 dark:focus:border-gray-700">
+            <div className="relative inline-flex items-center border-transparent border-b-2 pt-1 transition duration-150 ease-in-out focus:outline-none hover:border-gray-300 focus:border-gray-300 dark:hover:border-gray-700 dark:focus:border-gray-700">
                 <Dropdown>
                     <Dropdown.Trigger>
                         <span className="inline-flex rounded-md">
                             <button
                                 type="button"
-                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
+                                className="inline-flex items-center rounded-md border border-transparent bg-white py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
                             >
                                 {children}
                                 <svg

@@ -13,16 +13,40 @@ export default function FormEditSongInfo({
     genres,
     artists,
     className = "",
+    user,
 }) {
     const [imagePreview, setImagePreview] = useState(song?.image);
     const [audioPreview, setAudioPreview] = useState(song?.audio);
 
     const { data, setData, post, errors, processing, recentlySuccessful } =
-        useForm({});
+        useForm({
+            title: song?.title || "",
+            artists: song?.artists?.map((artist) => artist.id) || [],
+            genres: song?.genres?.map((genre) => genre.id) || [],
+        });
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("admin.songs.create-handle"));
+        if (song?.id) {
+            post(
+                route(
+                    user?.role === "admin"
+                        ? "admin.songs.update"
+                        : "artist.songs.update",
+                    {
+                        id: song.id,
+                    }
+                )
+            );
+        } else {
+            post(
+                route(
+                    user?.role === "admin"
+                        ? "admin.songs.create-handle"
+                        : "artist.songs.create-handle"
+                )
+            );
+        }
     };
 
     const handleImageChange = (e) => {
@@ -145,7 +169,10 @@ export default function FormEditSongInfo({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="artists" value="Artists" />
+                    <InputLabel
+                        htmlFor="artists"
+                        value={user?.role === "admin" ? "Artists" : "Feat with"}
+                    />
 
                     <SelectInput
                         isMulti

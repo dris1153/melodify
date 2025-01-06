@@ -12,8 +12,9 @@
 }
 
 .main-layout {
-    display: grid;
-    grid-template-columns: 3fr 14fr 4fr;
+    /* display: grid;
+    grid-template-columns: 3fr 14fr 4fr; */
+    display: flex;
     transition: all 0.75s;
     color: #fff;
     flex: 1;
@@ -30,4 +31,8 @@ input:focus {
     outline: none;
     border: none;
     box-shadow: none !important;
+}
+
+#seekbar-control {
+    width: 100%;
 }

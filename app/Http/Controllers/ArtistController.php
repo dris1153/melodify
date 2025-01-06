@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArtistFollower;
 use App\Models\RequestToArtist;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class ArtistController extends Controller
 {
@@ -14,6 +18,23 @@ class ArtistController extends Controller
     public function index()
     {
         //
+    }
+
+    public function detail(string $id)
+    {
+        $artist = User::find($id);
+
+        if ($artist && $artist->role !== 'artist') {
+            return redirect()->route('home')->with('error', 'Artist not found');
+        }
+        $artist->load('songs');
+
+        $followed = ArtistFollower::where('artist_id', $artist->id)->where('follower_id', Auth::id())->first();
+
+        return Inertia::render('ArtistDetail', [
+            'artist' => $artist,
+            'followed' => $followed
+        ]);
     }
 
     /**
@@ -74,5 +95,24 @@ class ArtistController extends Controller
         $artist_request->description = $request->description;
         $artist_request->state = "pending";
         $artist_request->save();
+    }
+
+    public function follow(string $id)
+    {
+        $artist = User::find($id);
+        $follower = Auth::user();
+
+        $followed = ArtistFollower::where('artist_id', $artist->id)->where('follower_id', $follower->id)->first();
+
+        if ($followed) {
+            $artist->followers()->detach($follower->id);
+        } else {
+            $artist->followers()->attach($follower->id);
+        }
+        $artist->follower = $artist->followers()->count();
+
+        $artist->save();
+
+        return Redirect::route('artist.detail', ['id' => $id]);
     }
 }

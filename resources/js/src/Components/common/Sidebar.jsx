@@ -22,7 +22,7 @@ const ListItems = [
 
 const Sidebar = () => {
     return (
-        <div className="w-full h-full pt-[45px]">
+        <div className="w-[300px] h-full pt-[45px]">
             <h1 className="text-[24px] font-[700] ml-[32px]">Melodify</h1>
             <div className="flex flex-col mt-[28px]">
                 {ListItems?.map((item, index) => (

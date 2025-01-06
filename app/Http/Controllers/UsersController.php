@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RequestToArtist;
 use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -100,5 +101,34 @@ class UsersController extends Controller
 
         $user->save();
         return redirect()->route('admin.users.list');
+    }
+
+    public function request_to_be_artist()
+    {
+        $requests = RequestToArtist::where('state', 'pending')->get();
+        $requests->load('user');
+        return Inertia::render('Admin/Users/RequestToBeArtist', [
+            'requests' => $requests
+        ]);
+    }
+
+    public function request_to_be_artist_handle()
+    {
+
+        $request = request();
+        $record = RequestToArtist::find($request->id);
+        if ($request->state == 'approved') {
+            $user = User::find($record->user_id);
+            $user->role = 'artist';
+            $user->description = $record->description;
+            $user->save();
+            $record->state = 'approved';
+            $record->save();
+        } else {
+            $record->state = 'rejected';
+            $record->save();
+        }
+
+        return redirect()->route('admin.users.request-to-be-artist');
     }
 }

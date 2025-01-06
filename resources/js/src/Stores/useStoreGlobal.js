@@ -2,6 +2,8 @@ import { create } from "zustand";
 
 const store = () => ({
     currentSong: null,
+    volume: 0.5,
+    isOpenPlaylist: false,
 });
 
 const useStoreGlobal = create(store);

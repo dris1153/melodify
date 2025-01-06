@@ -9,9 +9,6 @@ const Discover = ({ newestSongs }) => {
         <MainLayout>
             <Head title="Discover" />
             <div className="w-full h-full">
-                <Typography variant="h5" sx={{ mt: 6 }}>
-                    Playlist
-                </Typography>
                 <div className="flex flex-col gap-[12px]">
                     <Typography variant="h5" sx={{ mt: 6 }}>
                         New Drops - Feel the Vibe

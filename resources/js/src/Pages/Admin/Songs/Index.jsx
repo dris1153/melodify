@@ -2,7 +2,7 @@ import DangerButton from "@/src/Components/admin/primitives/DangerButton";
 import Modal from "@/src/Components/admin/Modal";
 import SecondaryButton from "@/src/Components/admin/primitives/SecondaryButton";
 import AdminLayout from "@/src/Layouts/AdminLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import {
     Table,
     TableBody,
@@ -11,33 +11,38 @@ import {
     TableRow,
 } from "@mui/material";
 import React from "react";
-import toast from "react-hot-toast";
 import PrimaryButton from "@/src/Components/admin/primitives/PrimaryButton";
 
 const Musics = ({ songs }) => {
-    // const [userSelected, setUserSelected] = React.useState(null);
+    const user = usePage().props.auth.user;
+    const [songSelected, setSongSelected] = React.useState(null);
 
-    // const { delete: destroy, processing, reset } = useForm({});
+    const { delete: destroy, processing, reset } = useForm({});
 
-    // const deleteUser = (e) => {
-    //     e.preventDefault();
-    //     destroy(
-    //         route("admin.users.delete", {
-    //             id: userSelected?.id,
-    //         }),
-    //         {
-    //             preserveScroll: true,
-    //             onSuccess: () => closeModal(),
-    //             onError: () => toast.error("Failed to delete user"),
-    //             onFinish: () => reset(),
-    //         }
-    //     );
-    //     closeModal();
-    // };
+    const deleteSong = (e) => {
+        e.preventDefault();
+        destroy(
+            route(
+                user?.role === "admin"
+                    ? "admin.songs.delete"
+                    : "artist.songs.delete",
+                {
+                    id: songSelected?.id,
+                }
+            ),
+            {
+                preserveScroll: true,
+                onSuccess: () => closeModal(),
+                onError: () => toast.error("Failed to delete song"),
+                onFinish: () => reset(),
+            }
+        );
+        closeModal();
+    };
 
-    // const closeModal = () => {
-    //     setUserSelected(null);
-    // };
+    const closeModal = () => {
+        setSongSelected(null);
+    };
 
     return (
         <AdminLayout
@@ -48,7 +53,13 @@ const Musics = ({ songs }) => {
                     </h2>
                     <PrimaryButton
                         onClick={() => {
-                            router.visit(route("admin.songs.create"));
+                            router.visit(
+                                route(
+                                    user?.role === "admin"
+                                        ? "admin.songs.create"
+                                        : "artist.songs.create"
+                                )
+                            );
                         }}
                     >
                         Add Song
@@ -57,18 +68,18 @@ const Musics = ({ songs }) => {
             }
         >
             <Head title="Musics" />
-            {/* 
-            <Modal show={userSelected} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
+
+            <Modal show={songSelected} onClose={closeModal}>
+                <form onSubmit={deleteSong} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Are you sure you want to delete {userSelected?.name}?
+                        Are you sure you want to delete {songSelected?.title}?
                     </h2>
 
                     <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        Once the account is deleted, all of its resources and
-                        data will be permanently deleted. Before deleting the
-                        account, please download any data or information that
-                        you wish to retain.
+                        Once the song is deleted, all of its resources and data
+                        will be permanently deleted. Before deleting the song,
+                        please download any data or information that you wish to
+                        retain.
                     </p>
 
                     <div className="mt-6 flex justify-end">
@@ -77,11 +88,11 @@ const Musics = ({ songs }) => {
                         </SecondaryButton>
 
                         <DangerButton className="ms-3" disabled={processing}>
-                            Delete Account
+                            Delete Song
                         </DangerButton>
                     </div>
                 </form>
-            </Modal> */}
+            </Modal>
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -150,7 +161,9 @@ const Musics = ({ songs }) => {
                                             <Link
                                                 className="text-blue-600 dark:text-blue-400"
                                                 href={route(
-                                                    "admin.users.edit",
+                                                    user?.role === "admin"
+                                                        ? "admin.songs.edit"
+                                                        : "artist.songs.edit",
                                                     { id: row.id }
                                                 )}
                                             >
@@ -161,7 +174,7 @@ const Musics = ({ songs }) => {
                                             <button
                                                 className="text-red-600 dark:text-red-400"
                                                 onClick={() => {
-                                                    // setUserSelected(row);
+                                                    setSongSelected(row);
                                                 }}
                                             >
                                                 Delete

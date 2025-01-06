@@ -7,17 +7,13 @@ import { Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import React from "react";
 
-const FormRequestBecomeArtist = ({
-    user,
-    className = "",
-    requestingToArtist,
-}) => {
+const FormRequestBecomeArtist = ({ user, className = "", statusRequest }) => {
     const [isChecked, setIsChecked] = React.useState(false);
     const { setData, post, errors, processing, recentlySuccessful } = useForm({
         description: "",
     });
 
-    const isRegisting = recentlySuccessful || requestingToArtist;
+    const isRegisting = recentlySuccessful || statusRequest === "pending";
 
     const submit = (e) => {
         e.preventDefault();
@@ -61,6 +57,13 @@ const FormRequestBecomeArtist = ({
             {isRegisting && (
                 <p className="mt-4 text-amber-500 font-[500] text-lg">
                     Your registration form is under review
+                </p>
+            )}
+            {statusRequest === "rejected" && (
+                <p className="mt-4 text-red-600 font-[500] text-lg">
+                    Your registration form is rejected.
+                    <br />
+                    Please review the information and try again.
                 </p>
             )}
             {isChecked && !isRegisting && (

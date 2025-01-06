@@ -24,7 +24,7 @@ export default function AdminLayout({ header, children }) {
                                 </div>
 
                                 {user?.role === "admin" && (
-                                    <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <div className="hidden space-x-10 sm:-my-px sm:ms-10 sm:flex">
                                         <NavLink
                                             href={route("admin.dashboard")}
                                             active={route().current(
@@ -34,12 +34,22 @@ export default function AdminLayout({ header, children }) {
                                             Dashboard
                                         </NavLink>
                                         <NavLink
-                                            href={route("admin.users.list")}
-                                            active={route().current(
-                                                "admin.users.list"
-                                            )}
+                                            dropdown={[
+                                                {
+                                                    href: route(
+                                                        "admin.users.list"
+                                                    ),
+                                                    label: "Users",
+                                                },
+                                                {
+                                                    href: route(
+                                                        "admin.users.request-to-be-artist"
+                                                    ),
+                                                    label: "Request To Be Artist",
+                                                },
+                                            ]}
                                         >
-                                            Users
+                                            People
                                         </NavLink>
                                         <NavLink
                                             dropdown={[
@@ -52,6 +62,22 @@ export default function AdminLayout({ header, children }) {
                                                 {
                                                     href: route(
                                                         "admin.songs.list"
+                                                    ),
+                                                    label: "Song",
+                                                },
+                                            ]}
+                                        >
+                                            Musics
+                                        </NavLink>
+                                    </div>
+                                )}
+                                {user?.role === "artist" && (
+                                    <div className="hidden space-x-10 sm:-my-px sm:ms-10 sm:flex">
+                                        <NavLink
+                                            dropdown={[
+                                                {
+                                                    href: route(
+                                                        "artist.songs.list"
                                                     ),
                                                     label: "Song",
                                                 },

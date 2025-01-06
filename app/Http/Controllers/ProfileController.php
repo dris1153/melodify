@@ -21,14 +21,27 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
 
-        $requesting_to_artist = RequestToArtist::where('user_id', $request->user()->id)
+        $status_request = RequestToArtist::where('user_id', $request->user()->id)
             ->where('state', 'pending')
             ->first();
+
+        if (!$status_request) {
+            $status_request = RequestToArtist::where('user_id', $request->user()->id)
+                ->where('state', 'rejected')
+                ->orderBy('updated_at', 'desc')
+                ->first();
+        }
+
+        if (!$status_request) {
+            $status_request = "";
+        }
+
+
 
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'requestingToArtist' => $requesting_to_artist
+            'statusRequest' => $status_request->state ?? "",
         ]);
     }
 

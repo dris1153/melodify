@@ -4,22 +4,27 @@ import SecondaryButton from "@/src/Components/admin/primitives/SecondaryButton";
 import { useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function FormDeleteUser({ user, className = "" }) {
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+export default function FormDeleteSong({ song, className = "", user }) {
+    const [confirmingSongDeletion, setConfirmingSongDeletion] = useState(false);
 
     const { delete: destroy, processing, reset, clearErrors } = useForm();
 
-    const confirmUserDeletion = () => {
-        setConfirmingUserDeletion(true);
+    const confirmSongDeletion = () => {
+        setConfirmingSongDeletion(true);
     };
 
-    const deleteUser = (e) => {
+    const deleteSong = (e) => {
         e.preventDefault();
 
         destroy(
-            route("admin.users.delete", {
-                id: user?.id,
-            }),
+            route(
+                user?.role === "admin"
+                    ? "admin.songs.delete"
+                    : "artist.songs.delete",
+                {
+                    id: song?.id,
+                }
+            ),
             {
                 preserveScroll: true,
                 onSuccess: () => closeModal(),
@@ -29,8 +34,7 @@ export default function FormDeleteUser({ user, className = "" }) {
     };
 
     const closeModal = () => {
-        setConfirmingUserDeletion(false);
-
+        setConfirmingSongDeletion(false);
         clearErrors();
         reset();
     };
@@ -39,32 +43,32 @@ export default function FormDeleteUser({ user, className = "" }) {
         <section className={`space-y-6 ${className}`}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Delete Account
+                    Delete Song
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Once your account is deleted, all of its resources and data
-                    will be permanently deleted. Before deleting your account,
+                    Once your song is deleted, all of its resources and data
+                    will be permanently deleted. Before deleting your song,
                     please download any data or information that you wish to
                     retain.
                 </p>
             </header>
 
-            <DangerButton onClick={confirmUserDeletion}>
-                Delete Account
+            <DangerButton onClick={confirmSongDeletion}>
+                Delete Song
             </DangerButton>
 
-            <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
+            <Modal show={confirmingSongDeletion} onClose={closeModal}>
+                <form onSubmit={deleteSong} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Are you sure you want to delete {user?.name}?
+                        Are you sure you want to delete {song?.title}?
                     </h2>
 
                     <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        Once the account is deleted, all of its resources and
-                        data will be permanently deleted. Before deleting the
-                        account, please download any data or information that
-                        you wish to retain.
+                        Once the song is deleted, all of its resources and data
+                        will be permanently deleted. Before deleting the song,
+                        please download any data or information that you wish to
+                        retain.
                     </p>
 
                     <div className="mt-6 flex justify-end">
@@ -73,7 +77,7 @@ export default function FormDeleteUser({ user, className = "" }) {
                         </SecondaryButton>
 
                         <DangerButton className="ms-3" disabled={processing}>
-                            Delete Account
+                            Delete Song
                         </DangerButton>
                     </div>
                 </form>
