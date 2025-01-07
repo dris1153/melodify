@@ -3,11 +3,11 @@ import { Link } from "@inertiajs/react";
 import React from "react";
 
 const ListItems = [
-    // {
-    //     title: "Library",
-    //     icon: "home",
-    //     route: "library",
-    // },
+    {
+        title: "Library",
+        icon: "home",
+        route: "library",
+    },
     {
         title: "Discover",
         icon: "discover",

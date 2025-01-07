@@ -39,7 +39,7 @@ const Profile = () => {
                 </div>
                 <hr className="mt-[24px] mb-[12px] border-[#fff2]" />
                 <Link
-                    className="flex items-center py-[12px] gap-[8px] hover:bg-[#222] -mx-[6px] px-[6px] rounded-[4px]"
+                    className="flex items-center py-[12px] gap-[8px] hover:bg-[#222] -mx-[6px] px-[6px] rounded-[4px] w-[calc(100%+12px)]"
                     href={route("profile.edit")}
                 >
                     <Person
@@ -52,7 +52,7 @@ const Profile = () => {
                 </Link>
                 {user?.role === "artist" && (
                     <Link
-                        className="flex items-center py-[12px] gap-[8px] hover:bg-[#222] -mx-[6px] px-[6px] rounded-[4px]"
+                        className="flex items-center py-[12px] gap-[8px] hover:bg-[#222] -mx-[6px] px-[6px] rounded-[4px] w-[calc(100%+12px)]"
                         href={route("artist.detail", { id: user?.id })}
                     >
                         <MusicNote
@@ -65,7 +65,11 @@ const Profile = () => {
                     </Link>
                 )}
                 <hr className="mt-[12px] mb-[12px] border-[#fff2]" />
-                <Link className="flex items-center py-[12px] gap-[8px] hover:bg-[#222] -mx-[6px] px-[6px] rounded-[4px]">
+                <Link
+                    className="flex items-center py-[12px] gap-[8px] hover:bg-[#222] -mx-[6px] px-[6px] rounded-[4px] w-[calc(100%+12px)]"
+                    href={route("logout")}
+                    method="post"
+                >
                     <Logout
                         sx={{
                             fontSize: "20px",

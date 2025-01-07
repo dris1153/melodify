@@ -9,6 +9,7 @@ use App\Http\Controllers\UsersController;
 use App\Models\Song;
 use App\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -23,6 +24,16 @@ Route::get('/', function () {
         'newestSongs' => $newest_songs
     ]);
 })->name('discover');
+
+Route::get('/library', function () {
+    $user = Auth::user();
+    $userModel = User::find($user->id);
+    $favorite_songs = $userModel->loveSongs()->get();
+    $favorite_songs->load('artists', 'genres');
+    return Inertia::render('Library', [
+        'favoriteSongs' => $favorite_songs
+    ]);
+})->name('library')->middleware('auth');
 
 Route::get(
     '/search',
@@ -46,7 +57,14 @@ Route::get('/artist/detail/{id}', [ArtistController::class, 'detail'])->name('ar
 Route::prefix("admin")->name("admin.")->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        $songInToday = Song::whereDate('created_at', today())->count();
+        $artistInToday = User::whereDate('created_at', today())->where('role', 'artist')->count();
+        $userInToday = User::whereDate('created_at', today())->count();
+        return Inertia::render('Dashboard', [
+            'songInToday' => $songInToday,
+            'artistInToday' => $artistInToday,
+            'userInToday' => $userInToday
+        ]);
     })->middleware(['auth', 'verified', 'admin'])->name('dashboard');
     Route::middleware('admin')->group(function () {
         Route::prefix("users")->name("users.")->group(function () {
@@ -99,6 +117,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/artist/request/{user_id}', [ArtistController::class, 'request_become'])->name('profile.request-artist');
 
     Route::post("/artist/follow/{id}", [ArtistController::class, 'follow'])->name('artist.follow');
+    Route::post("/song/love/{id}", [SongController::class, 'love'])->name('song.love');
 });
 
 

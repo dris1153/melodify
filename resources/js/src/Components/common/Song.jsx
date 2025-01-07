@@ -4,6 +4,7 @@ import useStoreGlobal from "@/src/Stores/useStoreGlobal";
 import { Link } from "@inertiajs/react";
 import { PlayArrow, PlayCircleOutline } from "@mui/icons-material";
 import React, { useEffect } from "react";
+import SongLove from "./SongLove";
 
 const Song = ({ ...song }) => {
     const { image, title, artists, audio, duration } = song;
@@ -38,12 +39,13 @@ const Song = ({ ...song }) => {
                 />
                 <div
                     className={cn(
-                        "absolute inset-0 bg-[#0008] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 ease-in-out flex items-center justify-center",
+                        "gap-[12px] absolute inset-0 bg-[#0008] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 ease-in-out flex items-center justify-center",
                         {
                             "opacity-100 pointer-events-auto": isPlaying,
                         }
                     )}
                 >
+                    <SongLove song={song} />
                     <div
                         className="w-[48px] h-[48px] border-[2px] border-solid border-white rounded-full flex items-center justify-center cursor-pointer"
                         onClick={() => {
@@ -69,6 +71,9 @@ const Song = ({ ...song }) => {
                                 }}
                             />
                         )}
+                    </div>
+                    <div className="pointer-events-none opacity-0">
+                        <SongLove song={song} />
                     </div>
                 </div>
             </div>

@@ -70,7 +70,7 @@ const ArtistDetail = ({ artist, followed }) => {
                             Songs by {artist?.name}
                         </Typography>
                         <div className="w-full grid grid-auto-rows gap-6 md:grid-cols-4 lg:grid-cols-5">
-                            {artist?.length > 0 ? (
+                            {artist?.songs?.length > 0 ? (
                                 artist?.songs?.map((song) => (
                                     <Song key={song.id} {...song} />
                                 ))

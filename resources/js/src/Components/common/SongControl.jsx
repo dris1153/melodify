@@ -2,8 +2,6 @@ import useStoreGlobal, { setStoreGlobal } from "@/src/Stores/useStoreGlobal";
 import TimeSlider from "react-input-slider";
 import React, { useEffect, useMemo } from "react";
 import {
-    Favorite,
-    FavoriteBorderOutlined,
     LibraryMusic,
     PauseCircleOutlined,
     PlayCircleOutlined,
@@ -13,6 +11,7 @@ import {
 } from "@mui/icons-material";
 import { cn, formatSongDuration } from "@/helpers/base";
 import { Box } from "@mui/material";
+import SongLove from "./SongLove";
 
 const SongControl = () => {
     const currentSong = useStoreGlobal((state) => state.currentSong);
@@ -68,14 +67,7 @@ const SongControl = () => {
                     </div>
                 </div>
                 <div>
-                    <div className="rounded-full p-4 hover:bg-[#fff2] w-[24px] h-[24px] flex items-center justify-center cursor-pointer">
-                        <FavoriteBorderOutlined
-                            sx={{
-                                color: "#fff",
-                                fontSize: "18px",
-                            }}
-                        />
-                    </div>
+                    <SongLove song={currentSong?.info} />
                 </div>
             </div>
             <div className="w-[35%] flex flex-col gap-[2px]">

@@ -209,4 +209,19 @@ class SongController extends Controller
         $song->delete();
         return redirect()->route($user->role === 'admin' ? 'admin.songs.list' : 'artist.songs.list');
     }
+
+    public function love(string $id)
+    {
+        $user = Auth::user();
+        $song = Song::find($id);
+
+        $userModel = User::find($user->id);
+        if ($userModel->loveSongs()->where('song_id', $song->id)->exists()) {
+            $userModel->loveSongs()->detach($song->id);
+        } else {
+            $userModel->loveSongs()->attach($song->id);
+        }
+
+        return redirect()->back();
+    }
 }

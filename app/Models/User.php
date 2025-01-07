@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'artist_followers', 'artist_id', 'follower_id');
     }
+
+    public function loveSongs()
+    {
+        return $this->belongsToMany(Song::class, 'user_song_loves', 'user_id', 'song_id');
+    }
 }
