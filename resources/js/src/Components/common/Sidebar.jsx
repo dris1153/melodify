@@ -13,11 +13,11 @@ const ListItems = [
         icon: "discover",
         route: "discover",
     },
-    // {
-    //     title: "Albums",
-    //     icon: "album",
-    //     route: "discover",
-    // },
+    {
+        title: "Artists",
+        icon: "album",
+        route: "artists",
+    },
 ];
 
 const Sidebar = () => {

@@ -35,6 +35,21 @@ Route::get('/library', function () {
     ]);
 })->name('library')->middleware('auth');
 
+Route::get('/artists', function () {
+    $artists = User::where('role', 'artist')->orderBy('follower', 'desc')->get();
+    return Inertia::render('Artists', [
+        'artists' => $artists
+    ]);
+})->name('artists');
+
+Route::get('/songs', function () {
+    $songs = Song::all();
+    $songs->load('artists', 'genres');
+    return Inertia::render('Songs', [
+        'songs' => $songs
+    ]);
+})->name('songs.index');
+
 Route::get(
     '/search',
     function () {

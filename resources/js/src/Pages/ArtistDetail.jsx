@@ -28,7 +28,7 @@ const ArtistDetail = ({ artist, followed }) => {
                             </h6>
                             <div className="flex items-end gap-[12px]">
                                 <p className="text-sm">
-                                    {artist?.follower} người quan tâm
+                                    {artist?.follower} follower
                                 </p>
                                 {user && user?.id != artist?.id && (
                                     <Link
