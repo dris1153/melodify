@@ -8,6 +8,7 @@ import { useForm } from "@inertiajs/react";
 import { ImageOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getCountries } from "@yusifaliyevpro/countries";
 import Select from "react-select";
 
 export default function FormEditUserInfo({ user, className = "" }) {
@@ -57,11 +58,36 @@ export default function FormEditUserInfo({ user, className = "" }) {
         }
     };
 
+    // useEffect(() => {
+    //     axios
+    //         .get("https://restcountries.com/v3.1/all")
+    //         .then((response) => {
+    //             const countryOptions = response.data.map((country) => ({
+    //                 value: country.cca2.toLowerCase(),
+    //                 label: country.name.common,
+    //             }));
+    //             setCountries(
+    //                 countryOptions.sort((a, b) =>
+    //                     a.label.localeCompare(b.label)
+    //                 )
+    //             );
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching countries:", error);
+    //         })
+    //         .finally(() => {
+    //             setIsCountriesLoading(false);
+    //         });
+    // }, []);
+
     useEffect(() => {
-        axios
-            .get("https://restcountries.com/v3.1/all")
-            .then((response) => {
-                const countryOptions = response.data.map((country) => ({
+        const fetchCountries = async () => {
+            try {
+                const countries = await getCountries({
+                    independent: true,
+                    fields: ["name", "cca2"],
+                });
+                const countryOptions = countries?.map((country) => ({
                     value: country.cca2.toLowerCase(),
                     label: country.name.common,
                 }));
@@ -70,13 +96,12 @@ export default function FormEditUserInfo({ user, className = "" }) {
                         a.label.localeCompare(b.label)
                     )
                 );
-            })
-            .catch((error) => {
-                console.error("Error fetching countries:", error);
-            })
-            .finally(() => {
                 setIsCountriesLoading(false);
-            });
+            } catch (error) {
+                console.error("Error fetching countries:", error);
+            }
+        };
+        fetchCountries();
     }, []);
 
     useEffect(() => {

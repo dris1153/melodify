@@ -101,18 +101,31 @@ const Header = ({ positionHeader }) => {
                 </div>
                 <Searchbar />
 
-                <div className=" flex items-center gap-[24px]">
+                <div
+                    className={cn("flex items-center gap-[24px]", {
+                        "gap-[8px]": !user,
+                    })}
+                >
                     {/* <Settings /> */}
                     {user ? (
                         <Profile />
                     ) : (
-                        <Button
-                            onClick={() => {
-                                router.visit(route("login"));
-                            }}
-                        >
-                            Sign in
-                        </Button>
+                        <>
+                            <Button
+                                onClick={() => {
+                                    router.visit(route("login"));
+                                }}
+                            >
+                                Sign in
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    router.visit(route("register"));
+                                }}
+                            >
+                                Sign up
+                            </Button>
+                        </>
                     )}
                 </div>
             </Container>
